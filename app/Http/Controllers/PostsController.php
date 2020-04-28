@@ -85,19 +85,46 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreatePostsRequest $request, $id)
     {
         //
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
         //
+        $post = Post::withTrashed()->where('id',$id)->first();
+
+        if(!$post->trashed())
+        {
+            $post->delete();
+
+            session()->flash('success','Post was successfully trashed');
+
+        }
+        else{
+            $post->forceDelete();
+            session()->flash('success','Post was successfully deleted');
+
+        }
+        return redirect(route('posts.index'));
     }
+
+    public function trashed()
+    {
+        $posts = Post::onlyTrashed()->get();
+
+        return view('posts.index', compact('posts'));
+    }
+
+
+
 }

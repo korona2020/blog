@@ -14,6 +14,8 @@
                 <table class="table">
                     <thead>
                         <th>Name</th>
+                        <th></th>
+                        <th></th>
                         <th>Action</th>
                     </thead>
 
@@ -21,6 +23,8 @@
                     @foreach($categories as $category)
                         <tr>
                             <td>{{$category->name}}</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="{{route('categories.edit',$category->id)}}" class="btn btn-info btn-sm" style="color: white">Edit</a>
                                 <button onclick="handleDelete({{$category->id}})" class="btn btn-danger btn-sm">Delete</button>
