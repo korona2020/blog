@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostsRequest;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -39,6 +40,7 @@ class PostsController extends Controller
     public function store(CreatePostsRequest $request)
     {
         //upload the image to the storage
+
             $image = $request->image->store('posts','public');
 
         //create new post
@@ -83,11 +85,32 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(CreatePostsRequest $request, $id)
+    public function update(CreatePostsRequest $request, Post $post)
     {
-        //
+
+       if($request->hasFile('image'))
+       {
+           //upload the image to the storage
+           $image = $request->image->store('posts','public');
+
+           //Delete old image
+           $post->deleteImage();
+       }
+        //update post
+        $post->update([
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'content'=>$request['content'],
+            'image'=>$image
+        ]);
+
+        //flash message
+        session()->flash('success','Post was updated created');
+
+        //redirect
+        return redirect(route('posts.index'));
 
 
     }
@@ -112,8 +135,8 @@ class PostsController extends Controller
         }
         else{
             $post->forceDelete();
+            $post->deleteImage();
             session()->flash('success','Post was successfully deleted');
-
         }
         return redirect(route('posts.index'));
     }
@@ -123,6 +146,17 @@ class PostsController extends Controller
         $posts = Post::onlyTrashed()->get();
 
         return view('posts.index', compact('posts'));
+    }
+
+    public function restore($id)
+    {
+        $post = Post::withTrashed()->where('id',$id)->first();
+
+        $post->restore();
+
+        session()->flash('success','Post was successfully restored');
+
+        return redirect(route('posts.index'));
     }
 
 

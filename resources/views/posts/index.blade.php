@@ -27,6 +27,10 @@
                              <td>
                                  @if(!$post->trashed())
                                     <a href="{{route('posts.edit',$post->id)}}" class="btn btn-info btn-sm">Edit</a>
+                                 @else
+                                     {!! Form::open(['method'=>'PUT','route'=>['posts.restore',$post->id]]) !!}
+                                            {!! Form::submit('Restore',['class'=>'btn btn-success btn-sm']) !!}
+                                     {!! Form::close() !!}
                                  @endif
                              </td>
                              <td>

@@ -18,8 +18,8 @@
                     {!! Form::text('description',null, ['class'=>'form-control']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('content','Content') !!}
-                    {!! Form::textarea('content',null, ['class'=>'form-control' ,'rows'=>3]) !!}
+                   <input id="x" type="hidden" name="content">
+                    <trix-editor input="x"></trix-editor>
                 </div>
             <div class="form-group">
                 {!! Form::label('published_at','Published_at') !!}
@@ -34,7 +34,7 @@
                 {!! Form::close() !!}
             @endif
             @if(!empty($post))
-                {!! Form::model($post,['method'=>'PUT','route'=>['posts.update',$post->id]]) !!}
+                {!! Form::model($post,['method'=>'PUT','route'=>['posts.update',$post->id],'files'=>true]) !!}
                     <div class="form-group">
                         {!! Form::label('title','Title') !!}
                         {!! Form::text('title',null, ['class'=>'form-control']) !!}
@@ -45,7 +45,8 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('content','Content') !!}
-                        {!! Form::textarea('content',null, ['class'=>'form-control' ,'rows'=>3]) !!}
+                        <input id="x" value="{{$post->content}}" type="hidden" name="content">
+                        <trix-editor input="x" ></trix-editor>
                     </div>
                     <div class="form-group">
                         {!! Form::label('published_at','Published_at') !!}
