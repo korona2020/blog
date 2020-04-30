@@ -13,6 +13,7 @@
             <table class="table">
                 <thead>
                  <th>Image</th>
+                 <th>Category</th>
                  <th>Title</th>
                  <th>Action</th>
                  <th></th>
@@ -23,6 +24,9 @@
                     @foreach($posts as $post)
                          <tr>
                              <td><img src="{{asset('storage/'.$post->image)}}" width="60px" height="60px"></td>
+                             <td>
+                                 <a href="{{route('categories.edit',$post->category->id)}}"> {{$post->category->name}}</a>
+                             </td>
                              <td>{{$post->title}}</td>
                              <td>
                                  @if(!$post->trashed())

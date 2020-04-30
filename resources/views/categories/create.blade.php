@@ -4,7 +4,7 @@
 
     <div class="card card-default">
         <div class="card-header">
-            {{isset($category) ? 'Add a Category' : 'Edit Category'}}
+            {{!isset($category) ? 'Add a Category' : 'Edit Category'}}
         </div>
         <div class="card-body">
             @if(empty($category))

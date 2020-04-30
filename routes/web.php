@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +20,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/categories','CategoriesController');
-Route::resource('/posts','PostsController');
-
-Route::get('/trashed_posts','PostsController@trashed')->name('posts.trash');
-Route::put('/restore/{id}','PostsController@restore')->name('posts.restore');
-
+Route::group(['middleware'=>['auth']], function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::resource('/categories','CategoriesController');
+    Route::resource('/posts','PostsController');
+    Route::get('/trashed_posts','PostsController@trashed')->name('posts.trash');
+    Route::put('/restore/{id}','PostsController@restore')->name('posts.restore');
+});

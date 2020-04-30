@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\CreatePostsRequest;
 use App\Post;
 use Illuminate\Http\Request;
@@ -14,6 +15,10 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
+    public function __construct()
+    {
+        $this->middleware('verifycategorycount')->only(['create','store']);
+    }
     public function index()
     {
         //
@@ -28,7 +33,7 @@ class PostsController extends Controller
     public function create()
     {
         //
-        return view('posts.create');
+        return view('posts.create')->with('categories', Category::pluck('name','id'));
     }
 
     /**
@@ -48,7 +53,8 @@ class PostsController extends Controller
             'title'=>$request->title,
             'description'=>$request->description,
             'content'=>$request['content'],
-            'image'=>$image
+            'image'=>$image,
+            'category_id'=>$request->category_id
         ]);
         //flash message
         session()->flash('success','Post was successfully created');
@@ -77,7 +83,8 @@ class PostsController extends Controller
     public function edit(Post $post)
     {
         //
-        return view('posts.create')->with('post',$post);
+
+        return view('posts.create')->with('post',$post)->with('categories', Category::pluck('name','id'));
     }
 
     /**
@@ -103,6 +110,7 @@ class PostsController extends Controller
             'title'=>$request->title,
             'description'=>$request->description,
             'content'=>$request['content'],
+            'category_id'=>$request->category_id,
             'image'=>$image
         ]);
 
