@@ -23,7 +23,9 @@ Auth::routes();
 Route::group(['middleware'=>['auth']], function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/categories','CategoriesController');
+    Route::resource('/tags','TagsController');
     Route::resource('/posts','PostsController');
     Route::get('/trashed_posts','PostsController@trashed')->name('posts.trash');
     Route::put('/restore/{id}','PostsController@restore')->name('posts.restore');
 });
+Route::resource('/roles','RolesController');

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\CreateRolesRequest;
+use App\Role;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class RolesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,8 @@ class CategoriesController extends Controller
     public function index()
     {
         //
-        return view('categories.index')->with('categories',Category::all());
+
+        return view('roles.index')->with('roles', Role::all());
     }
 
     /**
@@ -27,7 +28,7 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        return view('categories.create');
+        return view('roles.create');
     }
 
     /**
@@ -36,16 +37,16 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(CreateRolesRequest $request)
     {
         //
-        Category::create([
+        Role::create([
             'name'=>$request->name
         ]);
 
-        session()->flash('success','Category was succesfully created');
+        session()->flash('success','Role was succesfully created');
 
-        return redirect(route('categories.index'));
+        return redirect(route('roles.index'));
     }
 
     /**
@@ -65,10 +66,10 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Category $category)
+    public function edit(Role $role)
     {
         //
-        return view('categories.create')->with('category',$category);
+        return view('roles.create')->with('role',$role);
     }
 
     /**
@@ -76,40 +77,21 @@ class CategoriesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\Response
      */
-    public function update(CreateCategoryRequest $request, $id)
+    public function update(Request $request, $id)
     {
         //
-        $category = Category::findOrFail($id);
-
-        $category->update(['name'=>$request->name]);
-
-        session()->flash('success','Category was successfully updated');
-
-        return redirect(route('categories.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
-        $category = Category::findOrFail($id);
-        if($category->posts->count()>0)
-        {
-            session()->flash('error','Category cannot deleted because has some posts');
-        }
-        else{
-            $category->delete();
-
-            session()->flash('success','Category was successfully deleted');
-        }
-
-        return redirect(route('categories.index'));
     }
 }

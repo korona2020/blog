@@ -24,4 +24,10 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class)->withPivot('post_id','tag_id','created_at','updated_at');
+    }
+
 }

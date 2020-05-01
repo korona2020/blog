@@ -4,7 +4,7 @@
 
     <div class="card card-default">
         <div class="card-header">
-            {{isset($post) ? 'Add a Post' : 'Edit Post'}}
+            {{!isset($post) ? 'Add a Post' : 'Edit Post'}}
         </div>
         <div class="card-body">
             @if(empty($post))
@@ -29,6 +29,10 @@
                 {!! Form::label('category_id', 'Category ') !!}
                 {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
             </div>
+                <div class="form-group">
+                    {!! Form::label('tags', 'Tags ') !!}
+                    {!! Form::select('tags[]', $tags, null, ['class'=>'form-control','multiple']) !!}
+                </div>
             <div class="form-group">
                 {!! Form::file('image',null, ['class'=>'form-control']) !!}
             </div>
@@ -40,7 +44,7 @@
             @if(!empty($post))
                 <div class="container">
                     <div class="row col-md-2">
-                        <img src="{{asset('storage/' . $post->image)}}" alt="">
+                        <img height="150px" width="150px" src="{{asset('storage/' . $post->image)}}" alt="">
                     </div>
                     <div class="row col-md-6">
 
@@ -64,7 +68,11 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('category_id', 'Category ') !!}
-                            {!! Form::select('category_id', $categories,null, ['class' => 'form-control']) !!}
+                            {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('tags', 'Tags ') !!}
+                            {!! Form::select('tags[]', $tags, null, ['class'=>'form-control','multiple']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::file('image',null, ['class'=>'form-control']) !!}
@@ -83,4 +91,16 @@
             @include('partials.errors')
         </div>
     </div>
+@endsection
+
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.tags-selector').select2();
+        });
+    </script>
 @endsection

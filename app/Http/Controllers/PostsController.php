@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\CreatePostsRequest;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,7 +23,8 @@ class PostsController extends Controller
     public function index()
     {
         //
-        return view('posts.index')->with('posts',Post::all());
+        return view('posts.index')
+            ->with('posts',Post::all());
     }
 
     /**
@@ -33,7 +35,9 @@ class PostsController extends Controller
     public function create()
     {
         //
-        return view('posts.create')->with('categories', Category::pluck('name','id'));
+        return view('posts.create')
+            ->with('categories', Category::pluck('name','id'))
+            ->with('tags', Tag::pluck('name','id'));
     }
 
     /**
@@ -45,17 +49,22 @@ class PostsController extends Controller
     public function store(CreatePostsRequest $request)
     {
         //upload the image to the storage
-
+       // dd($request->all());
             $image = $request->image->store('posts','public');
 
         //create new post
-        Post::create([
+        $post = Post::create([
             'title'=>$request->title,
             'description'=>$request->description,
             'content'=>$request['content'],
             'image'=>$image,
             'category_id'=>$request->category_id
         ]);
+        if($request->tags)
+        {
+            $post->tags()->attach($request->tags);
+        }
+
         //flash message
         session()->flash('success','Post was successfully created');
         //redirect
@@ -84,7 +93,10 @@ class PostsController extends Controller
     {
         //
 
-        return view('posts.create')->with('post',$post)->with('categories', Category::pluck('name','id'));
+        return view('posts.create')
+            ->with('post',$post)
+            ->with('categories', Category::pluck('name','id'))
+            ->with('tags',$post->tags->pluck('name','id')->toArray());
     }
 
     /**
@@ -113,6 +125,10 @@ class PostsController extends Controller
             'category_id'=>$request->category_id,
             'image'=>$image
         ]);
+       if($request->tags)
+       {
+           $post->tags()->sync($request->tags);
+       }
 
         //flash message
         session()->flash('success','Post was updated created');

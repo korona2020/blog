@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\CreateTagsRequest;
+use App\Tag;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class TagsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class CategoriesController extends Controller
     public function index()
     {
         //
-        return view('categories.index')->with('categories',Category::all());
+        return view('tags.index')->with('tags',Tag::all());
     }
 
     /**
@@ -27,7 +27,7 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        return view('categories.create');
+        return view('tags.create');
     }
 
     /**
@@ -36,16 +36,16 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(CreateTagsRequest $request)
     {
         //
-        Category::create([
+        Tag::create([
             'name'=>$request->name
         ]);
 
-        session()->flash('success','Category was succesfully created');
+        session()->flash('success','Tag was succesfully created');
 
-        return redirect(route('categories.index'));
+        return redirect(route('tags.index'));
     }
 
     /**
@@ -65,10 +65,10 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Category $category)
+    public function edit(Tag $tag)
     {
         //
-        return view('categories.create')->with('category',$category);
+        return view('tags.create')->with('tag',$tag);
     }
 
     /**
@@ -78,16 +78,16 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(CreateCategoryRequest $request, $id)
+    public function update(CreateTagsRequest $request, $id)
     {
         //
-        $category = Category::findOrFail($id);
+        $tag = Tag::findOrFail($id);
 
-        $category->update(['name'=>$request->name]);
+        $tag->update(['name'=>$request->name]);
 
-        session()->flash('success','Category was successfully updated');
+        session()->flash('success','Tag was successfully updated');
 
-        return redirect(route('categories.index'));
+        return redirect(route('tags.index'));
     }
 
     /**
@@ -99,17 +99,18 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         //
-        $category = Category::findOrFail($id);
-        if($category->posts->count()>0)
+        $tag = Tag::findOrFail($id);
+        if($tag->posts->count() > 0)
         {
-            session()->flash('error','Category cannot deleted because has some posts');
+            session()->flash('error','Tag cannot be deleted because it has some posts');
         }
-        else{
-            $category->delete();
+        else
+        {
+            $tag->delete();
 
-            session()->flash('success','Category was successfully deleted');
+            session()->flash('success','Tag was successfully deleted');
         }
 
-        return redirect(route('categories.index'));
+        return redirect(route('tags.index'));
     }
 }

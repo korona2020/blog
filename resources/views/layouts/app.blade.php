@@ -19,8 +19,11 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('css')
 </head>
 <body>
     <div id="app">
@@ -93,6 +96,19 @@
                                     <a href="{{route('categories.index')}}">Categories</a>
                                 </li>
                             </ul>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <a href="{{route('tags.index')}}">Tags</a>
+                                </li>
+                            </ul>
+                            <ul class="list-group mt-4">
+                                <li class="list-group-item">
+                                    <a href="{{route('users.index')}}">Users</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="{{route('roles.index')}}">Roles</a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="col-md-8">
                             @if(session()->has('success'))
@@ -116,5 +132,6 @@
     </div>
 
 @yield('scripts')
+
 </body>
 </html>
