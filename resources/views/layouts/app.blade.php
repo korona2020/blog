@@ -80,6 +80,7 @@
 
         <main class="py-4">
             @auth
+
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
@@ -101,6 +102,7 @@
                                     <a href="{{route('tags.index')}}">Tags</a>
                                 </li>
                             </ul>
+                            @if(auth()->user()->checkRole())
                             <ul class="list-group mt-4">
                                 <li class="list-group-item">
                                     <a href="{{route('users.index')}}">Users</a>
@@ -109,6 +111,7 @@
                                     <a href="{{route('roles.index')}}">Roles</a>
                                 </li>
                             </ul>
+                            @endif
                         </div>
                         <div class="col-md-8">
                             @if(session()->has('success'))

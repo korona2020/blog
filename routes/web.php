@@ -27,5 +27,9 @@ Route::group(['middleware'=>['auth']], function(){
     Route::resource('/posts','PostsController');
     Route::get('/trashed_posts','PostsController@trashed')->name('posts.trash');
     Route::put('/restore/{id}','PostsController@restore')->name('posts.restore');
+    Route::resource('/roles','RolesController')->middleware('checkrole');
+    Route::resource('/users','UsersController')->middleware('checkrole');
 });
-Route::resource('/roles','RolesController');
+
+
+

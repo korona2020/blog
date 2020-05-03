@@ -77,21 +77,34 @@ class RolesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(CreateRolesRequest $request, Role $role)
     {
         //
+
+        $role->update(['name'=>$request->name]);
+
+        session()->flash('success','Role was successfully updated');
+
+        return redirect(route('roles.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
         //
+        $role = Role::findOrFail($id);
+
+        $role->delete();
+
+        session()->flash('success','Role was successfully deleted');
+
+        return redirect(route('roles.index'));
     }
 }
