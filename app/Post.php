@@ -12,7 +12,7 @@ class Post extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title','description','content','published_at','image','category_id'
+        'title','description','content','published_at','image','category_id','post_id'
     ];
 
     public function deleteImage()
@@ -28,6 +28,10 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withPivot('post_id','tag_id','created_at','updated_at');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

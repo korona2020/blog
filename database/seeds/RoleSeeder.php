@@ -18,10 +18,19 @@ class RoleSeeder extends Seeder
         $role = Role::create([
             'name'=>'administrator'
         ]);
+        $role1 = Role::create([
+            'name'=>'writer'
+        ]);
         $role->users()->create([
 
             'name'=>'Erand Elmaz',
             'email'=>'eelmazi8@gmail.com',
+            'password'=>Hash::make('12345678'),
+        ]);
+        $role1->users()->create([
+
+            'name'=>'Anxhela Elmaz',
+            'email'=>'a@gmail.com',
             'password'=>Hash::make('12345678'),
         ]);
 
