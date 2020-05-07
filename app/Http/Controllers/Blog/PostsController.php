@@ -34,7 +34,7 @@ class PostsController extends Controller
     {
         return view('blog.tag')
             ->with('tag',$tag)
-            ->with('posts',$tag->posts()->simplePaginate(2))
+            ->with('posts',$tag->posts()->searched()->simplePaginate(2))
             ->with('tags', Tag::all())
             ->with('categories',Category::all());
     }
